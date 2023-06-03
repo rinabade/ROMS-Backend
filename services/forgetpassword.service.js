@@ -27,10 +27,10 @@ module.exports = {
                 const resetLink = `http://localhost:5000/forget/reset?token=${token}`;
 
                 if(resetLink){
-                    // const email1 = result[0].email;
-                    // const firstname = result[0].firstname;
-                    // const lastname = result[0].lastname;
-                    // ctx.call("email.token", {email1,firstname, lastname,resetLink});
+                    const email1 = result[0].email;
+                    const firstname = result[0].firstname;
+                    const lastname = result[0].lastname;
+                    ctx.call("email.token", {email,firstname, lastname,resetLink});
                     console.log (resetLink);
                 }
 

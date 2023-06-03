@@ -4,7 +4,7 @@ const moment = require('moment');
 const apigatewayMixin = require("../mixins/apigateway.mixin.js");
 
 module.exports = {
-    name: "categoy",
+    name: "category",
     mixins: [apigatewayMixin],
     hooks:{
         before: {
@@ -28,7 +28,7 @@ module.exports = {
                 const now = moment();
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
-                if(!ingredient_name || !quantity) {
+                if(!category_name) {
                     throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {}) 
                 }
 
@@ -39,7 +39,7 @@ module.exports = {
                 else{
                     const [result] = await connection.execute(`INSERT INTO categories(category_name, createdAt) VALUES (?,?)`, [category_name,formattedNow]);
                     if(result){
-                        return {type: "SUCCESS", code:200, message:"Ingredient successfully created...."}
+                        return {type: "SUCCESS", code:200, message:"Category added successfully...."}
                     }
                 }
 

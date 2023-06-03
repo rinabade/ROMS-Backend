@@ -4,7 +4,7 @@ const moment = require('moment');
 const apigatewayMixin = require("../mixins/apigateway.mixin.js");
 
 module.exports = {
-    name: "food",
+    name: "menu",
     mixins: [apigatewayMixin],
     hooks:{
         before: {
@@ -21,16 +21,16 @@ module.exports = {
             rest: "POST /",
             params: {
                 item_name: { type: "string", max: 30 },
-                decription : { type: "string", max: 30 },
+                description : { type: "string" },
                 price: { type: "number" }
             },
             async handler (ctx) {
-                const {item_name, price } = ctx.params;
+                const {item_name, description, price } = ctx.params;
 
                 const now = moment();
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
-                if(!item_name || !price) {
+                if(!item_name || !description || !price) {
                     throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {}) 
                 }
                 else{
@@ -42,7 +42,7 @@ module.exports = {
                     else{
                         const [result] = await connection.execute(`INSERT INTO menus(item_name, price, createdAt) VALUES(?,?,?)`, [item_name, price, formattedNow]);
                         if(result){
-                            return {type: "SUCCESS", code: 200, message: "New Food item is addded in food"};
+                            return {type: "SUCCESS", code: 200, message: "New Food item is added in Menu"};
                         }
                         else{
                             throw this.broker.errorHandler(new Errors.MoleculerClientError("Something went wrong", 401, "ERR_UNDEFINED", {}), {}) 
