@@ -13,9 +13,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      table_number: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       menu_id: {
         allowNull: false,
         type: Sequelize.INTEGER
+      },
+      item_name : {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       quantity: {
         allowNull: false,

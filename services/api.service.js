@@ -93,12 +93,49 @@ module.exports = {
 			},
 
 			{
-				path: "/admin",
+				path: "/auth",
 
 				whitelist: [
 					"role_permission.roleCreate",
 					"role_permission.update",
-					"role_permission.permission",
+					"role_permission.permission",					
+				],
+
+				use: [],
+
+				mergeParams: true,
+
+				authentication: true,
+
+				authorization: false,
+
+				autoAliases: true,
+
+				aliases: {
+
+				},
+
+				callingOptions: {},
+
+				bodyParsers: {
+					json: {
+						strict: false,
+						limit: "1MB"
+					},
+					urlencoded: {
+						extended: true,
+						limit: "1MB"
+					}
+				},
+
+				mappingPolicy: "all", 
+				logging: true
+			},
+
+			{
+				path: "/admin",
+
+				whitelist: [
 					"category.create",
 					"category.update",
 					"category.delete",
@@ -222,7 +259,47 @@ module.exports = {
 				mappingPolicy: "all", 
 
 				logging: true
-			},			
+			},	
+			
+			{
+				path: "/customer",
+
+				whitelist: [
+					"cart.create",
+					"cart.update"
+				],
+
+				use: [],
+
+				mergeParams: true,
+
+				authentication: false,
+
+				authorization: false,
+
+				autoAliases: true,
+
+				aliases: {
+
+				},
+
+				callingOptions: {},
+
+				bodyParsers: {
+					json: {
+						strict: false,
+						limit: "1MB"
+					},
+					urlencoded: {
+						extended: true,
+						limit: "1MB"
+					}
+				},
+
+				mappingPolicy: "all", 
+
+				logging: true
+			},
 		],
 
 		log4XXResponses: false,

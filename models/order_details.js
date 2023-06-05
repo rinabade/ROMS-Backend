@@ -16,7 +16,12 @@ module.exports = (sequelize, DataTypes) => {
   
   OrderDetail.init({
     order_id: DataTypes.INTEGER,
+    table_number : DataTypes.INTEGER,
     menu_id: DataTypes.INTEGER,
+    item_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     quantity: DataTypes.INTEGER,
     price: DataTypes.DOUBLE
   }, {

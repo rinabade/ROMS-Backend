@@ -44,7 +44,7 @@ module.exports = {
                             const Npassword = await bcrypt.hash(password, 8);
                             const [result1] = await connection.execute('INSERT INTO employees(role_id, firstname, lastname, email, password, gender, address, phone, job_title, salary_information, employee_status, hire_date, createdAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [role_id,firstname, lastname, email, Npassword, gender, address, phone, job_title, salary_information, employee_status, hire_date, formattedNow]);
                             if (result1)
-                                // ctx.call("email.sendmail", { firstname, lastname, email });
+                                ctx.call("email.sendmail", { firstname, lastname, email });
                                 return { type: "Success", code: 200, message: "Registration Successfull... Please Check your email" };
                         }
                     }

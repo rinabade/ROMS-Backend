@@ -6,6 +6,8 @@ const Sequelize = require('sequelize');
 module.exports= {
     name: "orders",
     actions: {
+        create :{
+
         handler: async(ctx)=>{
             // QRcode handler to fetch table id for order service 
 
@@ -26,6 +28,9 @@ module.exports= {
 
             // Start the scanner
             scanner.start();
+
+            
+         }
         }
     }
 }

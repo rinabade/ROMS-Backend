@@ -19,10 +19,8 @@ module.exports = {
             rest: "POST /",
             async handler(ctx){
                 const arrays = ctx.params.arrays;
-                const results = [];
-            
+                const results = [];            
                 // console.log("property =>", arrays)
-
                 try {
                     // Loop through the array of arrays and insert each array into the database table
                     // for (let i = 0; i < arraysToInsert; i++) {
@@ -37,8 +35,7 @@ module.exports = {
                         const [rows] = await connection.execute(sql, values);
                         // console.log(rows);
                         results.push(rows);
-                    }
-                
+                    }                
                     // Return a success message
                     return { message: 'Arrays inserted successfully' };
                   } catch (error) {
