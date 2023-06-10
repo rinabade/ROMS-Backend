@@ -12,13 +12,24 @@ const mysql2 = require("mysql2/promise");
 
 // Create a connection
 const connection = mysql2.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'restaurant_system',
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "restaurant_system",
     waitForConnections: true,
-    connectionLimit: 10,
+    // connectionLimit: 10,
     queueLimit: 0
 });
 
 module.exports = connection;
+
+
+
+
+// host: "localhost",
+//     user: "id20873014_restaurant",
+//     password: "Database@123",
+//     database: "id20873014_restaurant_system",
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0

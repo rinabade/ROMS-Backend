@@ -1,27 +1,27 @@
 const connection = require("../db-Config.js");
 const {Errors} = require("moleculer");
 const moment = require('moment');
-const apigatewayMixin = require("../mixins/apigateway.mixin.js");
+// const apigatewayMixin = require("../mixins/apigateway.mixin.js");
 
 module.exports = {
     name: "category",
-    mixins: [apigatewayMixin],
-    hooks:{
-        before: {
-            create : ["isAuthenticated", "isAuthorized"],
-            update : ["isAuthenticated", "isAuthorized"],
-            delete : ["isAuthenticated", "isAuthorized"],
-        }
-    },
+    // mixins: [apigatewayMixin],
+    // hooks:{
+    //     before: {
+    //         create : ["isAuthenticated", "isAuthorized"],
+    //         update : ["isAuthenticated", "isAuthorized"],
+    //         delete : ["isAuthenticated", "isAuthorized"],
+    //     }
+    // },
     actions: {
         create: {
-            authorization :{
-                role : "admin",
-            },
+            // authorization :{
+            //     role : "admin",
+            // },
             rest: "POST /",
-            params: {
-                category_name: { type: "string", max: 30 },
-            },
+            // params: {
+            //     category_name: { type: "string", max: 30 },
+            // },
             async handler (ctx) {
                 const {category_name} = ctx.params;
                 
@@ -32,18 +32,42 @@ module.exports = {
                     throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {}) 
                 }
 
-                const [ rows] = await connection.execute(`SELECT category_name FROM categories WHERE category_name=?`, [category_name]);
-                if(rows[0]){
-                    throw this.broker.errorHandler(new Errors.MoleculerClientError("The category item is already created....", 401, "ERR_UNDEFINED", {}), {}) 
-                }
+                // const [ rows] = await connection.execute(`SELECT category_name FROM categories WHERE category_name=?`, [category_name]);
+                // if(rows){
+                //     throw this.broker.errorHandler(new Errors.MoleculerClientError("The category item is already created....", 401, "ERR_UNDEFINED", {}), {}) 
+                // }
                 else{
                     const [result] = await connection.execute(`INSERT INTO categories(category_name, createdAt) VALUES (?,?)`, [category_name,formattedNow]);
                     if(result){
                         return {type: "SUCCESS", code:200, message:"Category added successfully...."}
                     }
                 }
+                
 
             }
+
+        },
+
+        getAllCategory:{
+            // authorization :{
+            //     role : "admin",
+            // },
+            rest: "GET /",
+            async handler (ctx) {
+                try {
+                    const [result] = await connection.query(`SELECT category_id, category_name FROM categories`);
+                    if(result){
+                        return ({type:"SUCCESS", code:200, message:"All data fetched successfully....", data: result});
+                    }
+                } catch (error) {
+                    throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
+                }
+
+                // const [result] = await connection.execute(`SELECT firstname, lastname, email, gender, address, phone, job_title, salary_information, employee_status FROM employees`);
+                // if (result) {
+                //     return ({ type: "SUCCESS", code: 200, message: `Employee is fetched successfully....` });
+                // }
+            } 
 
         },
 

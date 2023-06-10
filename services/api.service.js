@@ -44,20 +44,21 @@ module.exports = {
 			{
 				path: "/api",
 
-				// cors: {
-				// 	origin: "*",
-				// 	allowedHeaders: ['Content-Type', 'Authorization'],
-				// 	methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-				// 	credentials: true,
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,
 					
-				// 	// Configures the Access-Control-Expose-Headers CORS header.
-				// 	exposedHeaders: [],
-				// 	// Configures the Access-Control-Max-Age CORS header.
-				// 	maxAge: 3600
-				// },
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
 
 				whitelist: [
 					"register.create",
+					"register.getAllEmployees",
 					"register.update",
 					"register.delete",
 					"login.signin"
@@ -95,17 +96,34 @@ module.exports = {
 			{
 				path: "/auth",
 
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,
+					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
+
 				whitelist: [
 					"role_permission.roleCreate",
-					"role_permission.update",
-					"role_permission.permission",					
+					"role_permission.getAllRoles",
+					"role_permission.roleUpdate",
+					"role_permission.roleDelete",
+					"role_permission.permissionCreate",		
+					"role_permission.getAllPermission",
+					"role_permission.permissionUpdate",
+					"role_permission.permissionDelete"		
 				],
 
 				use: [],
 
 				mergeParams: true,
 
-				authentication: true,
+				authentication: false,
 
 				authorization: false,
 
@@ -134,10 +152,22 @@ module.exports = {
 
 			{
 				path: "/admin",
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,
+					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
 
 				whitelist: [
 					"category.create",
 					"category.update",
+					"category.getAllCategory",
 					"category.delete",
 					"menu.create",
 					"menu.update",
@@ -155,7 +185,7 @@ module.exports = {
 
 				mergeParams: true,
 
-				authentication: true,
+				authentication: false,
 
 				authorization: false,
 
@@ -184,6 +214,18 @@ module.exports = {
 
 			{
 				path: "/change",
+
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,
+					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
 
 				whitelist: [
 					"password.change"
@@ -224,6 +266,18 @@ module.exports = {
 			{
 				path: "/forget",
 
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,
+					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
+
 				whitelist: [
 					"forget.password",
 					"reset.password",
@@ -263,6 +317,18 @@ module.exports = {
 			
 			{
 				path: "/customer",
+
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,
+					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
 
 				whitelist: [
 					"cart.create",
