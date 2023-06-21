@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   menus.init({
+    category_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     item_name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -17,7 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    price: DataTypes.DOUBLE
+    price: DataTypes.DOUBLE,
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'menus',

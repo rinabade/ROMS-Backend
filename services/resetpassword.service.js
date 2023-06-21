@@ -2,17 +2,20 @@ const connection = require("../db-Config.js");
 const bcrypt = require("bcryptjs");
 const {Errors} = require("moleculer");
 const crypto = require("crypto");
+// const resetLink = require("./forgetpassword.service")
 
 module.exports = {
     name : "reset",
     actions: {
         password:{
-            rest: "PATCH /",
+            rest: "PATCH /:email",
             params: {
                 token: "string",
             },
-            handler: async(ctx)=>{
+            async handler(ctx){
                     const token = ctx.params.token;
+
+                    console.log("token------", token)
 
                     function createToken(data) {
                         const hash = crypto.createHash('sha256', data);

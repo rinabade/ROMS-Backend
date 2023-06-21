@@ -20,9 +20,7 @@ module.exports = {
             rest: "POST /",
             handler : async(ctx)=>{
                 const {role_name} = ctx.params;                
-                // Get the current date and time
                 const now = moment();
-                // Format the date and time
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
                     if(!role_name ){
@@ -108,14 +106,14 @@ module.exports = {
             rest: "POST /",
             handler : async(ctx)=>{
                 const {permission_name} = ctx.params;
-                const date = Math.floor(Date.now() / 1000);
-                console.log(("Current date:",date));
+                const now = moment();
+                const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
                 try{
                     if(!permission_name){
                         return { type: "ERROR", code: 401, message: "The field remains empty. Please fill out the field." };
                     }
                     else {
-                        const [result] = await connection.execute('INSERT INTO permissions(permission_name, createdAt) VALUES (?,?)', [permission_name, date]);
+                        const [result] = await connection.execute('INSERT INTO permissions(permission_name, createdAt) VALUES (?,?)', [permission_name, formattedNow]);
                         if (result)
                             return { type: "Success", code: 200, message: "New permission is created" };
                         }
@@ -141,11 +139,6 @@ module.exports = {
                 } catch (error) {
                     throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
                 }
-
-                // const [result] = await connection.execute(`SELECT firstname, lastname, email, gender, address, phone, job_title, salary_information, employee_status FROM employees`);
-                // if (result) {
-                //     return ({ type: "SUCCESS", code: 200, message: `Employee is fetched successfully....` });
-                // }
             } 
 
         },
@@ -156,13 +149,11 @@ module.exports = {
             // },
             rest: "PATCH /:id",
             async handler (ctx) {
-                const {id,permission_name} = ctx.params;
-                // Get the current date and time
+                const {id, permission_name} = ctx.params;
                 const now = moment();
-                // Format the date and time
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
-                const [result] = await connection.execute(`UPDATE permissions SET permission_name=?, updatedAt=? WHERE permission_id=? `, [permission_name, formattedNow,id]);
+                const [result] = await connection.execute(`UPDATE permissions SET permission_name=?, updatedAt=? WHERE permission_id=? `, [permission_name, formattedNow, id]);
                 if (result) {
                     return ({ type: "SUCCESS", code: 200, message: `Permission id : '${id}' is updated successfully....` });
                 }
@@ -178,7 +169,7 @@ module.exports = {
             async handler (ctx) {
                 const {id} = ctx.params;
                 
-                const [result] = await connection.query(`DELETE FROM permissions WHERE permission_id=?`, [id]);
+                const [result] = await connection.execute(`DELETE FROM permissions WHERE permission_id=?`, [id]);
                 if (result) {
                     return ({ type: "SUCCESS", code: 200, message: `Permission id : '${id}' is deleted successfully....` });
                 }

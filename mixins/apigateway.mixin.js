@@ -44,9 +44,9 @@ module.exports = {
                     const [result] = await connection.execute(`SELECT * FROM employees WHERE employee_id=? `, [ctx.meta.user]);
                     // console.log(result)
                     // console.log("result---------", result[0].role_id)
-                    const [result1] = await connection.execute(`SELECT role_name FROM roles WHERE role_id=?`, [result[0].role_id]);
+                    const [result1] = await connection.execute(`SELECT job_title FROM employees WHERE employee_id=?`, [result[0].employee_id]);
                     // console.log("result1---------", result1[0].role_name);
-                    if (ctx.meta.role !== result1[0].role_name) {
+                    if (ctx.meta.role !== result1[0].job_title) {
                         return this.broker.errorHandler(new Errors.MoleculerClientError("Unauthorised", 401, "ERR_UNAUTHORISED", {}), {}) 
                     }
                 

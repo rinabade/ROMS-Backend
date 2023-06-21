@@ -12,25 +12,31 @@ module.exports = {
                 const { email, password } = ctx.params;
                 try {
                     if (!email || !password) {
-                        return { type: "ERROR", code: 401, message: "You did not enter your email or password" };
+                        return { type: "ERROR", status: 400, message: "Missing email or password" };
                     }
                     else {
                         const [result] = await connection.execute(`SELECT * FROM employees WHERE email = ? `, [email]);
                         
                         if(!result[0]){
-                            return { type: "ERROR", code: 401, message: "Incorrect email address" };
+                            return { type: "ERROR", status: 401, message: "Incorrect email address" };
                         }
                         if (result[0]) {
                             const pass = result[0].password;
                             if (!result.length || !await bcrypt.compare(password, pass)) {
-                                throw new Error("Incorrect email or password");
+                                return new Error("Incorrect email or password");
                             }
                             else {
                                 // console.log((result[0].id));
-                                const token = jwt.sign({ employee_id: result[0].employee_id }, process.env.JWT_SECRET, {
+                                const token = jwt.sign({ employee_id: result[0].employee_id, job_title:result[0].job_title }, process.env.JWT_SECRET, {
                                     expiresIn: process.env.JWT_LIFETIME
                                 });
-                                return ({type: "Success", code: 200, message: "You have logged in successfully...", token: token });
+                                
+                                // const refreshToken = jwt.sign({employee_id:result[0].employee_id, job_title: result[0].job_title}, process.env.JWT_REFRESH_TOKEN,{
+                                //     expiresIn: process.env.JWT_REFRESH_LIFETIME
+                                // } );
+                                
+                                return ({type: "Success", status: 200, message: "You have logged in successfully...", token: token , id:result[0].employee_id , job_title:result[0].job_title });
+
                             }
                         }
                     }

@@ -26,7 +26,7 @@ module.exports = {
                 // Get the current date and time
                 const now = moment();
                 // Format the date and time
-                const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
+                const formattedNow = now.format('YYYY-MM-DD ');
 
                     // if (!firstname || !lastname || !email || !password || !gender || !address || !phone || !job_title || !salary_information || !employee_status || !hire_date) {
                     //     throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {}) 
@@ -58,7 +58,8 @@ module.exports = {
             rest: "GET /",
             async handler (ctx) {
                 try {
-                    const [result] = await connection.query(`SELECT employee_id, firstname, lastname, email, gender, address, phone, job_title, salary_information, employee_status, hire_date FROM employees`);
+                    const [result] = await connection.query(`SELECT employee_id, firstname, lastname, email, gender, address, phone, job_title, DATE_FORMAT(hire_date,'%Y-%m-%d') as hire_date, salary_information, employee_status  FROM employees`);
+
                     if(result){
                         return ({type:"SUCCESS", code:200, message:"All data fetched successfully....", data: result});
                     }
@@ -66,28 +67,44 @@ module.exports = {
                     throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
                 }
 
-                // const [result] = await connection.execute(`SELECT firstname, lastname, email, gender, address, phone, job_title, salary_information, employee_status FROM employees`);
-                // if (result) {
-                //     return ({ type: "SUCCESS", code: 200, message: `Employee is fetched successfully....` });
-                // }
             } 
 
         },
 
+        getEmployee:{
+            // authorization :{
+            //     role : "admin",
+            // },
+            rest: "GET /:id",
+            async handler (ctx) {
+                const {id} = ctx.params;
+                // try {
+                    const [data] = await connection.execute(`SELECT firstname, lastname, email, gender, address, phone, job_title, hire_date, salary_information, employee_status  FROM employees WHERE employee_id=?`, [id] );
+                    if(data){
+                        return ({type:"SUCCESS", code:200, message:`Employee id : ${id} data fetched successfully....`,  data});
+                    }
+21
+                // } catch (error) {
+                //     throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
+                // }
+
+            } 
+        },
+
 
         update:{
-            authorization :{
-                role : "admin",
-            },
+            // authorization :{
+            //     role : "admin",
+            // },
             rest: "PATCH /:id",
             async handler (ctx) {
-                const {id,firstname, lastname, email, gender, address, phone, job_title, salary_information, employee_status} = ctx.params;
+                const {id, email, address, phone, job_title, salary_information, employee_status} = ctx.params;
                 // Get the current date and time
                 const now = moment();
                 // Format the date and time
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
-                const [result] = await connection.execute(`UPDATE employees SET firstname=?, lastname=?, email=?, gender=?, address=?, phone=?, job_title = ?, salary_information =?, employee_status=?, updatedAt=? WHERE employee_id=? `, [firstname, lastname, email, gender, address, phone, job_title, salary_information, employee_status,formattedNow,id]);
+                const [result] = await connection.execute(`UPDATE employees SET email=?, address=?, phone=?, job_title = ?, salary_information =?,  employee_status=?, updatedAt=? WHERE employee_id=? `, [email,  address, phone, job_title, salary_information, employee_status, formattedNow,id]);
                 if (result) {
                     return ({ type: "SUCCESS", code: 200, message: `Employee id : '${id}' is updated successfully....` });
                 }
@@ -111,5 +128,19 @@ module.exports = {
 
         },
 
+    },
+
+    ProfileUpdate : {
+        rest: "PATCH /:id",
+        async handler(ctx){
+            const{id, firstname, lastname, email, address, phone} = ctx.params;
+            const now = moment();
+            const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
+
+            const [result] = await connection.execute(`UPDATE employees SET firstname=?, lastname=? email=? address=?, phone=?, updatedAt=? WHERE employee_id=? `, [firstname, lastname, email, address, phone, formattedNow, id]);
+            if (result) {
+                return ({ type: "SUCCESS", code: 200, message: `Employee id : '${id}' is updated successfully....` });
+            }
+        }
     }
 }
