@@ -1,22 +1,27 @@
 const connection = require("../db-Config.js");
 const moment = require('moment');
-// const ApiGatewayMixin = require("../mixins/apigateway.mixin.js");
+const ApiGatewayMixin = require("../mixins/apigateway.mixin.js");
 
 module.exports = {
     name: "role_permission",
-    // mixins: [ApiGatewayMixin],
+    mixins: [ApiGatewayMixin],
     // hooks:{
     //     before: {
     //         rolecreate : ["isAuthenticated", "isAuthorized"],
-    //         update : ["isAuthenticated", "isAuthorized"],
-    //         permission : ["isAuthenticated", "isAuthorized"],
+    //         getAllRoles: ["isAuthenticated", "isAuthorized"],
+    //         roleUpdate : ["isAuthenticated", "isAuthorized"],
+    //         roleDelete : ["isAuthenticated", "isAuthorized"],
+    //         permissionCreate: ["isAuthenticated", "isAuthorized"],
+    //         getAllPermission: ["isAuthenticated", "isAuthorized"],
+    //         permissionUpdate: ["isAuthenticated", "isAuthorized"],
+    //         permissionDelete: ["isAuthenticated", "isAuthorized"],
     //     }
     // },
     actions: {
         roleCreate: {
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "POST /",
             handler : async(ctx)=>{
                 const {role_name} = ctx.params;                
@@ -39,9 +44,9 @@ module.exports = {
         },
 
         getAllRoles:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "GET /",
             async handler (ctx) {
                 try {
@@ -62,9 +67,9 @@ module.exports = {
         },
 
         roleUpdate:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "PATCH /:id",
             async handler (ctx) {
                 const {id,role_name} = ctx.params;
@@ -82,9 +87,9 @@ module.exports = {
         },
 
         roleDelete:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "DELETE /:id",
             async handler (ctx) {
                 const {id} = ctx.params;
@@ -100,9 +105,9 @@ module.exports = {
 
 
         permissionCreate: {
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "POST /",
             handler : async(ctx)=>{
                 const {permission_name} = ctx.params;
@@ -126,9 +131,9 @@ module.exports = {
         },
 
         getAllPermission:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "GET /",
             async handler (ctx) {
                 try {
@@ -144,9 +149,9 @@ module.exports = {
         },
 
         permissionUpdate:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "PATCH /:id",
             async handler (ctx) {
                 const {id, permission_name} = ctx.params;
@@ -162,9 +167,9 @@ module.exports = {
         },
 
         permissionDelete:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "DELETE /:id",
             async handler (ctx) {
                 const {id} = ctx.params;

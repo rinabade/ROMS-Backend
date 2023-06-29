@@ -2,11 +2,26 @@ const connection = require("../db-Config.js");
 const bcrypt = require("bcryptjs");
 const {Errors} = require("moleculer");
 const moment = require('moment');
+// const ApigatewayMixin = require("../mixins/apigateway.mixin.js");
+
 
 module.exports = {
     name: "register",
+    // mixins: [ApigatewayMixin],
+    // hooks:{
+    //     before: {
+    //         create: ["isAuthenticated", "isAuthorized"],
+    //         getAllEmployee: ["isAuthenticated", "isAuthorized"],
+    //         getEmployee: ["isAuthenticated", "isAuthorized"],
+    //         update : ["isAuthenticated", "isAuthorized"],
+    //         delete : ["isAuthenticated", "isAuthorized"],
+    //     }
+    // },
     actions: {
         create: {
+            authorization :{
+                role : "admin",
+            },
             rest: "POST /",
             // params: {
             //     firstname: { type: "string", max: 30 },
@@ -52,9 +67,9 @@ module.exports = {
         },
 
         getAllEmployees:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "GET /",
             async handler (ctx) {
                 try {
@@ -72,9 +87,9 @@ module.exports = {
         },
 
         getEmployee:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "GET /:id",
             async handler (ctx) {
                 const {id} = ctx.params;
@@ -93,9 +108,9 @@ module.exports = {
 
 
         update:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "PATCH /:id",
             async handler (ctx) {
                 const {id, email, address, phone, job_title, salary_information, employee_status} = ctx.params;
@@ -129,18 +144,4 @@ module.exports = {
         },
 
     },
-
-    ProfileUpdate : {
-        rest: "PATCH /:id",
-        async handler(ctx){
-            const{id, firstname, lastname, email, address, phone} = ctx.params;
-            const now = moment();
-            const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
-
-            const [result] = await connection.execute(`UPDATE employees SET firstname=?, lastname=? email=? address=?, phone=?, updatedAt=? WHERE employee_id=? `, [firstname, lastname, email, address, phone, formattedNow, id]);
-            if (result) {
-                return ({ type: "SUCCESS", code: 200, message: `Employee id : '${id}' is updated successfully....` });
-            }
-        }
-    }
 }

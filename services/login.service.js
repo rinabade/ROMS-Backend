@@ -10,6 +10,7 @@ module.exports = {
             rest: "POST /",
             handler: async (ctx) => {
                 const { email, password } = ctx.params;
+                console.log({email,password});
                 try {
                     if (!email || !password) {
                         return { type: "ERROR", status: 400, message: "Missing email or password" };

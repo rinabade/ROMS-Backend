@@ -15,6 +15,7 @@ const connection = mysql2.createPool({
     password: "",
     database: "restaurant_system",
     waitForConnections: true,
+    // rowsAsArray: true,
     // connectionLimit: 10,
     queueLimit: 0
 });

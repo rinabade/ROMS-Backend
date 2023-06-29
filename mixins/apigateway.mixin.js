@@ -14,7 +14,7 @@ module.exports = {
                 decoded = jwt.verify(ctx.meta.token, process.env.JWT_SECRET, process.env.JWT_LIFETIME);
                 // console.log(decoded.employee_id);
                 [result] = await connection.execute(`SELECT * FROM employees WHERE employee_id=?`, [decoded.employee_id]); 
-                // console.log(result);
+                console.log(result);
                 if (result[0]) {
                     // console.log("Id is:", result[0].employee_id);
                     ctx.meta.user = result[0].employee_id;

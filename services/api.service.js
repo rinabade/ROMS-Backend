@@ -19,6 +19,7 @@ module.exports = {
 
 	/** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
 	settings: {
+		
 		port: process.env.PORT || 5000,
 
 		ip: "0.0.0.0",
@@ -200,12 +201,13 @@ module.exports = {
 					"category.create",
 					"category.update",
 					"category.getAllCategory",
+					"category.getCategory",
 					"category.delete",
-					// "menu.create",
+					"menu.create",
 					"menu.getMenu",
+					"menu.getAllMenu",
 					"menu.update",
 					"menu.delete",
-
 				],
 
 				use: [],
@@ -218,12 +220,7 @@ module.exports = {
 
 				autoAliases: true,
 
-				aliases: {
-					"POST /file-upload": {
-						"Content-Type" :  "multipart/form-data",
-					},
-					actions: "menu.create",
-                },
+				aliases: {},
 				
 				callingOptions: {},
 
@@ -243,25 +240,30 @@ module.exports = {
 			},
 
 			{
-				path: "/uploads",
-
+				path: "/upload",
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
 				whitelist: [
-					"file.save"
+					"file.handlePostRequest"
 				],
-
 				use: [],
-
 				mergeParams: true,
-
 				authentication: false,
-
 				authorization: false,
-
-				autoAliases: true,
-
+				autoAliases: true,				
 				aliases: {
-					 // File upload from HTML multipart form
-					//  "POST /file-upload": "multipart",
+					// File upload from HTML multipart form
+					// "POST /": "multipart/form-data",
+
+					"POST /": "file.handlePostRequest", 
 
                     
                     // // File upload from AJAX or cURL
@@ -378,6 +380,16 @@ module.exports = {
 			
 			{
 				path: "/customer",
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
 
 				whitelist: [
 					"cart.create",
@@ -415,7 +427,6 @@ module.exports = {
 
 				logging: true
 			},
-
 			
 		],
 
@@ -427,8 +438,6 @@ module.exports = {
 			folder: "public",
 			options: {}
 		},
-
-
 		
 	},
 
@@ -436,7 +445,7 @@ module.exports = {
 		
 		async authenticate(ctx, routes, req) {
 			const auth = req.headers["authorization"];
-			if (!auth) {
+			if (!auth || !auth.startsWith("Bearer")) {
 				throw new Error("Something went wrong in Authentication");
 			}
 			const token = auth.split(" ")[1];

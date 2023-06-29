@@ -1,6 +1,7 @@
 'use strict';
 const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
+  
   class menus extends Model {
     static associate(models) {
       // menus.hasMany(models.ingredients, {

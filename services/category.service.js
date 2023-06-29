@@ -1,23 +1,25 @@
 const connection = require("../db-Config.js");
 const {Errors} = require("moleculer");
 const moment = require('moment');
-// const apigatewayMixin = require("../mixins/apigateway.mixin.js");
+const ApigatewayMixin = require("../mixins/apigateway.mixin.js");
 
 module.exports = {
     name: "category",
-    // mixins: [apigatewayMixin],
+    mixins: [ApigatewayMixin],
     // hooks:{
     //     before: {
-    //         create : ["isAuthenticated", "isAuthorized"],
+    //         create: ["isAuthenticated", "isAuthorized"],
+    //         // getAllCategory : ["isAuthenticated", "isAuthorized"],
+    //         // getCategory: ["isAuthenticated", "isAuthorized"],
     //         update : ["isAuthenticated", "isAuthorized"],
     //         delete : ["isAuthenticated", "isAuthorized"],
     //     }
     // },
     actions: {
         create: {
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "POST /",
             // params: {
             //     category_name: { type: "string", max: 30 },
@@ -49,9 +51,9 @@ module.exports = {
         },
 
         getAllCategory:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "GET /",
             async handler (ctx) {
                 try {
@@ -70,6 +72,26 @@ module.exports = {
             } 
 
         },
+
+        getCategory:{
+            authorization :{
+                role : "admin",
+            },
+            rest: "GET /:id",
+            async handler (ctx) {
+                try {
+                    const [result] = await connection.query(`SELECT category_id, category_name FROM categories WHERE category_id=?`, [id]);
+                    if(result){
+                        return ({type:"SUCCESS", code:200, message:"All data fetched successfully....", data: result});
+                    }
+                } catch (error) {
+                    throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
+                }
+
+            } 
+
+        },
+
 
         update:{
             authorization :{
