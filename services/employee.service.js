@@ -2,45 +2,21 @@ const connection = require("../db-Config.js");
 const bcrypt = require("bcryptjs");
 const {Errors} = require("moleculer");
 const moment = require('moment');
-// const ApigatewayMixin = require("../mixins/apigateway.mixin.js");
+const ApigatewayMixin = require("../mixins/apigateway.mixin.js");
 
 
 module.exports = {
     name: "register",
-    // mixins: [ApigatewayMixin],
-    // hooks:{
-    //     before: {
-    //         create: ["isAuthenticated", "isAuthorized"],
-    //         getAllEmployee: ["isAuthenticated", "isAuthorized"],
-    //         getEmployee: ["isAuthenticated", "isAuthorized"],
-    //         update : ["isAuthenticated", "isAuthorized"],
-    //         delete : ["isAuthenticated", "isAuthorized"],
-    //     }
-    // },
+    mixins: [ApigatewayMixin],
     actions: {
         create: {
             authorization :{
                 role : "admin",
             },
             rest: "POST /",
-            // params: {
-            //     firstname: { type: "string", max: 30 },
-            //     lastname: { type: "string", max: 30 },
-            //     email: { type: "string", max: 50 },
-            //     password: { type: "string", max: 30 },
-            //     address: { type: "string", max: 30 },
-            //     phone: { type: "string" },
-            //     // role: { type: "string", max: 10 },
-            //     job_title: {type: "string", max: 10},
-            //     salary_information : {type: "number"},
-            //     employee_status : {type: "string", max: 10},
-            //     hire_date : {type: "string", max: 20}
-            // },
             async handler(ctx) {
                 const { firstname, lastname, email, password, gender, address, phone, job_title, salary_information, employee_status, hire_date } = ctx.params;
-                // Get the current date and time
                 const now = moment();
-                // Format the date and time
                 const formattedNow = now.format('YYYY-MM-DD ');
 
                     // if (!firstname || !lastname || !email || !password || !gender || !address || !phone || !job_title || !salary_information || !employee_status || !hire_date) {
@@ -93,16 +69,10 @@ module.exports = {
             rest: "GET /:id",
             async handler (ctx) {
                 const {id} = ctx.params;
-                // try {
                     const [data] = await connection.execute(`SELECT firstname, lastname, email, gender, address, phone, job_title, hire_date, salary_information, employee_status  FROM employees WHERE employee_id=?`, [id] );
                     if(data){
                         return ({type:"SUCCESS", code:200, message:`Employee id : ${id} data fetched successfully....`,  data});
                     }
-21
-                // } catch (error) {
-                //     throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
-                // }
-
             } 
         },
 
@@ -114,9 +84,7 @@ module.exports = {
             rest: "PATCH /:id",
             async handler (ctx) {
                 const {id, email, address, phone, job_title, salary_information, employee_status} = ctx.params;
-                // Get the current date and time
                 const now = moment();
-                // Format the date and time
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
                 const [result] = await connection.execute(`UPDATE employees SET email=?, address=?, phone=?, job_title = ?, salary_information =?,  employee_status=?, updatedAt=? WHERE employee_id=? `, [email,  address, phone, job_title, salary_information, employee_status, formattedNow,id]);

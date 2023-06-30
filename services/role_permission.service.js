@@ -5,18 +5,6 @@ const ApiGatewayMixin = require("../mixins/apigateway.mixin.js");
 module.exports = {
     name: "role_permission",
     mixins: [ApiGatewayMixin],
-    // hooks:{
-    //     before: {
-    //         rolecreate : ["isAuthenticated", "isAuthorized"],
-    //         getAllRoles: ["isAuthenticated", "isAuthorized"],
-    //         roleUpdate : ["isAuthenticated", "isAuthorized"],
-    //         roleDelete : ["isAuthenticated", "isAuthorized"],
-    //         permissionCreate: ["isAuthenticated", "isAuthorized"],
-    //         getAllPermission: ["isAuthenticated", "isAuthorized"],
-    //         permissionUpdate: ["isAuthenticated", "isAuthorized"],
-    //         permissionDelete: ["isAuthenticated", "isAuthorized"],
-    //     }
-    // },
     actions: {
         roleCreate: {
             authorization :{
@@ -57,11 +45,6 @@ module.exports = {
                 } catch (error) {
                     throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
                 }
-
-                // const [result] = await connection.execute(`SELECT firstname, lastname, email, gender, address, phone, job_title, salary_information, employee_status FROM employees`);
-                // if (result) {
-                //     return ({ type: "SUCCESS", code: 200, message: `Employee is fetched successfully....` });
-                // }
             } 
 
         },
@@ -73,9 +56,7 @@ module.exports = {
             rest: "PATCH /:id",
             async handler (ctx) {
                 const {id,role_name} = ctx.params;
-                // Get the current date and time
                 const now = moment();
-                // Format the date and time
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
                 const [result] = await connection.execute(`UPDATE roles SET role_name=?, updatedAt=? WHERE role_id=? `, [role_name, formattedNow,id]);

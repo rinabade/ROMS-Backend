@@ -5,11 +5,6 @@ const apigatewayMixin = require("../mixins/apigateway.mixin.js");
 module.exports = {
     name: "password",
     mixins: [apigatewayMixin],
-    hooks: {
-        before: {
-            change: ["isAuthenticated", "isAuthorized"]
-        }
-    },
     actions: {
         change: {
             authorization: {

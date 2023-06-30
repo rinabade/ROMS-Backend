@@ -20,7 +20,7 @@ module.exports = {
 
 				if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
 				// return response.status(400).json({ error: "Invalid cart items" });
-				return "Invalid"
+				return "Invalid cart items"
 				}
 
 				const query = `INSERT INTO carts (menu_id, item_name, quantity, price) VALUES (?, ?, ?, ?)`;
@@ -30,9 +30,9 @@ module.exports = {
 				const values = [menu_id, item_name, quantity, price];
 
 				await connection.execute(query, values);
-				}
-
-				return "Cart items added successfully"
+			}
+			
+			return "Cart items added successfully"
 
 				// for (const item of cartItems) {
 					// console.log(item.table_number);
@@ -68,6 +68,24 @@ module.exports = {
 						// }
 			},
 		},
+
+		getAllCart:{
+            rest: "GET /",
+            async handler (ctx) {
+                try {
+                    const [result] = await connection.query(`SELECT cart_id, item_name, quantity, price FROM carts`);
+					console.log(result)
+
+                    if(result){
+                        return ({type:"SUCCESS", code:200, message:"All data fetched successfully....", data: result});
+                    }
+                } catch (error) {
+                    throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
+                }
+
+            } 
+
+        },
 
 		update: {
 			rest: "PATCH /:id",

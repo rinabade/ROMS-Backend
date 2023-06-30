@@ -1,10 +1,11 @@
 const connection = require("../db-Config.js");
 const {Errors} = require("moleculer");
 const moment = require('moment');
-// const ApiGatewayMixin = require('../mixins/apigateway.mixin')
+const ApiGatewayMixin = require('../mixins/apigateway.mixin')
 
 module.exports = {
     name: "menu",
+    mixins: [ApiGatewayMixin],
     actions: {
         create: {
             rest: "POST /",  
@@ -44,8 +45,6 @@ module.exports = {
             },
             rest: "GET /",
             async handler (ctx) {
-                // const {id} = ctx.params;
-                // console.log("id-----------", id)
                 try {
                     const [result] = await connection.query(`SELECT menu_id, category_id,item_name, description, price FROM menus`);
                     if(result){
@@ -81,10 +80,6 @@ module.exports = {
                 role : "admin",
             },
             rest: "PATCH /:id",
-            // params: {
-            //     item_name: { type: "string", max: 30 },
-            //     price: { type: "number" }
-            // },
             async handler (ctx) {
                 const {id, item_name, description, price} = ctx.params;
                 const now = moment();

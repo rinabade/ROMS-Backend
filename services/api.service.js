@@ -52,16 +52,16 @@ module.exports = {
 			{
 				path: "/api",
 
-				// cors: {
-				// 	origin: "*",
-				// 	allowedHeaders: ['Content-Type'],
-				// 	methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-				// 	credentials: true,					
-				// 	// Configures the Access-Control-Expose-Headers CORS header.
-				// 	exposedHeaders: [],
-				// 	// Configures the Access-Control-Max-Age CORS header.
-				// 	maxAge: 3600
-				// },
+				cors: {
+					origin: "*",
+					allowedHeaders: ['Content-Type'],
+					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+					credentials: true,					
+					// Configures the Access-Control-Expose-Headers CORS header.
+					exposedHeaders: [],
+					// Configures the Access-Control-Max-Age CORS header.
+					maxAge: 3600
+				},
 
 				whitelist: [
 					"register.create",
@@ -116,7 +116,7 @@ module.exports = {
 
 				mergeParams: true,
 
-				authentication: false,
+				authentication: true,
 
 				authorization: false,
 
@@ -157,7 +157,7 @@ module.exports = {
 
 				mergeParams: true,
 
-				authentication: false,
+				authentication: true,
 
 				authorization: false,
 
@@ -241,18 +241,9 @@ module.exports = {
 
 			{
 				path: "/upload",
-				cors: {
-					origin: "*",
-					allowedHeaders: ['Content-Type'],
-					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-					credentials: true,					
-					// Configures the Access-Control-Expose-Headers CORS header.
-					exposedHeaders: [],
-					// Configures the Access-Control-Max-Age CORS header.
-					maxAge: 3600
-				},
+				
 				whitelist: [
-					"file.handlePostRequest"
+					"file-service.uploads"
 				],
 				use: [],
 				mergeParams: true,
@@ -260,24 +251,7 @@ module.exports = {
 				authorization: false,
 				autoAliases: true,				
 				aliases: {
-					// File upload from HTML multipart form
-					// "POST /": "multipart/form-data",
-
-					"POST /": "file.handlePostRequest", 
-
-                    
-                    // // File upload from AJAX or cURL
-                    // "PUT /:id": "stream:file.save",
-
-                    // File upload from HTML form and overwrite busboy config
-                    // "POST / ": {
-                    //     type: "multipart/form-data",
-                    //     // Action level busboy config
-                    //     busboyConfig: {
-                    //         limits: { files: 1 }
-                    //     },
-                    //     actions: "file.save"
-                    // }
+					"POST /file-upload":"multipart:file-service.uploads",
 				},
 
 				callingOptions: {},
@@ -310,7 +284,7 @@ module.exports = {
 
 				mergeParams: true,
 
-				authentication: false,
+				authentication: true,
 
 				authorization: false,
 
@@ -393,7 +367,11 @@ module.exports = {
 
 				whitelist: [
 					"cart.create",
-					"cart.update"
+					"cart.update",
+					"cart.getAllCart",
+					"feedback.create",
+					"feedback.getAllFeedback",
+					"feedback.delete",
 				],
 
 				use: [],
@@ -452,6 +430,7 @@ module.exports = {
 			ctx.meta.token = token;
 			ctx.meta.path = routes.path;
 			ctx.meta.role = req.$action.authorization.role;
+
 		},
 		
 
