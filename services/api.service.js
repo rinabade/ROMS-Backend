@@ -20,18 +20,20 @@ module.exports = {
 
 	/** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
 	settings: {
-		
+
 		port: process.env.PORT || 5000,
 
 		ip: "0.0.0.0",
 
-		use: [cors()],
+		use: [
+			
+		],
 
 		        // Global CORS settings for all routes
 				cors: {
 					// Configures the Access-Control-Allow-Origin CORS header.
 					origin: "*",
-					// Configures the Access-Control-Allow-Methods CORS header. 
+					// Configures the Access-Control-Allow-Methods CORS header.
 					methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE", "PATCH"],
 					// Configures the Access-Control-Allow-Headers CORS header.
 					allowedHeaders: ['Content-Type', 'Authorization'],
@@ -58,7 +60,7 @@ module.exports = {
 					origin: "*",
 					allowedHeaders: ['Content-Type'],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-					credentials: true,					
+					credentials: true,
 					// Configures the Access-Control-Expose-Headers CORS header.
 					exposedHeaders: [],
 					// Configures the Access-Control-Max-Age CORS header.
@@ -141,7 +143,7 @@ module.exports = {
 					}
 				},
 
-				mappingPolicy: "all", 
+				mappingPolicy: "all",
 				logging: true
 			},
 
@@ -149,10 +151,10 @@ module.exports = {
 				path: "/auth2",
 
 				whitelist: [
-					"role_permission.permissionCreate",		
+					"role_permission.permissionCreate",
 					"role_permission.getAllPermission",
 					"role_permission.permissionUpdate",
-					"role_permission.permissionDelete",		
+					"role_permission.permissionDelete",
 				],
 
 				use: [],
@@ -182,7 +184,7 @@ module.exports = {
 					}
 				},
 
-				mappingPolicy: "all", 
+				mappingPolicy: "all",
 				logging: true
 			},
 
@@ -190,9 +192,9 @@ module.exports = {
 				path: "/admin",
 				cors: {
 					origin: "*",
-					allowedHeaders: ['Content-Type'],
+					allowedHeaders: ['Content-Type', 'Authorization'],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-					credentials: true,					
+					credentials: true,
 					// Configures the Access-Control-Expose-Headers CORS header.
 					exposedHeaders: [],
 					// Configures the Access-Control-Max-Age CORS header.
@@ -225,7 +227,7 @@ module.exports = {
 				aliases: {
 					// "POST /file-upload":"multipart:menu.create",
 				},
-				
+
 				callingOptions: {},
 
 				bodyParsers: {
@@ -239,13 +241,23 @@ module.exports = {
 					}
 				},
 
-				mappingPolicy: "all", 
+				mappingPolicy: "all",
 				logging: true
 			},
 
 			{
 				path: "/upload",
-				
+				cors: {
+					origin: "*",
+						allowedHeaders: ['Content-Type', 'Authorization'],
+						methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+						credentials: true,
+						// Configures the Access-Control-Expose-Headers CORS header.
+						exposedHeaders: [],
+						// Configures the Access-Control-Max-Age CORS header.
+						maxAge: 3600
+				},
+
 				whitelist: [
 					"file-service.uploads"
 				],
@@ -255,7 +267,7 @@ module.exports = {
 				mergeParams: true,
 				authentication: false,
 				authorization: false,
-				autoAliases: true,				
+				autoAliases: true,
 				aliases: {
 					"POST /file-upload":"multipart:file-service.uploads",
 				},
@@ -273,7 +285,7 @@ module.exports = {
 					}
 				},
 
-				mappingPolicy: "all", 
+				mappingPolicy: "all",
 
 				logging: true
 			},
@@ -313,7 +325,7 @@ module.exports = {
 					}
 				},
 
-				mappingPolicy: "all", 
+				mappingPolicy: "all",
 
 				logging: true
 			},
@@ -353,18 +365,18 @@ module.exports = {
 					}
 				},
 
-				mappingPolicy: "all", 
+				mappingPolicy: "all",
 
 				logging: true
-			},	
-			
+			},
+
 			{
 				path: "/customer",
 				cors: {
 					origin: "*",
 					allowedHeaders: ['Content-Type'],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-					credentials: true,					
+					credentials: true,
 					// Configures the Access-Control-Expose-Headers CORS header.
 					exposedHeaders: [],
 					// Configures the Access-Control-Max-Age CORS header.
@@ -407,11 +419,11 @@ module.exports = {
 					}
 				},
 
-				mappingPolicy: "all", 
+				mappingPolicy: "all",
 
 				logging: true
 			},
-			
+
 		],
 
 		log4XXResponses: false,
@@ -422,11 +434,11 @@ module.exports = {
 			folder: "public",
 			options: {}
 		},
-		
+
 	},
 
 	methods: {
-		
+
 		async authenticate(ctx, routes, req) {
 			const auth = req.headers["authorization"];
 			if (!auth || !auth.startsWith("Bearer")) {
@@ -438,10 +450,10 @@ module.exports = {
 			ctx.meta.role = req.$action.authorization.role;
 
 		},
-		
+
 
 		async authorize(ctx, routes, req) {
-			
+
 		}
 
 	}
