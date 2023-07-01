@@ -32,9 +32,9 @@ module.exports = {
         },
 
         getAllRoles:{
-            authorization :{
-                role : "admin",
-            },
+            // authorization :{
+            //     role : "admin",
+            // },
             rest: "GET /",
             async handler (ctx) {
                 try {

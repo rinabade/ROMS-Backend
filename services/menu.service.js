@@ -10,11 +10,28 @@ module.exports = {
         create: {
             rest: "POST /",  
             // uploads.single('file'),          
-            async handler (ctx) {                
-                const {category_id,item, description, price } = ctx.params;
+            async handler (ctx) { 
+                const {category_id,item, description, price,  } = ctx.params;
                 const now = moment();
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
                                 
+                // const fileChunks = [];
+                // for await(const chunk of ctx.params){
+                //     fileChunks.push(chunk);
+                // }
+                // let imageBuffer = Buffer.concat(fileChunks);
+
+                // const imagePath  = path.join(
+                //     __dirname,
+                //     "..",
+                //     "uploads",
+                //     "image.jpeg"
+                // );
+                // console.log(imagePath)
+
+                // const image = await sharp(imageBuffer).resize(300, 300).toFile(imagePath);
+                // console.log(image);
+                
                 // if(!category_id || !item || !description || !price ) {
                 //           throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {}) 
                 //         }
@@ -40,9 +57,9 @@ module.exports = {
 
 
         getAllMenu:{
-            authorization :{
-                role : "admin",
-            },
+            // authorization :{
+            //     role : "admin",
+            // },
             rest: "GET /",
             async handler (ctx) {
                 try {
@@ -63,7 +80,7 @@ module.exports = {
             rest: "GET /:id",
             async handler (ctx) {
                 const {id} = ctx.params;
-                console.log("id-----------", id)
+                // console.log("id-----------", id)
                 try {
                     const [result] = await connection.query(`SELECT menu_id, category_id,item_name, description, price, quantity FROM menus WHERE category_id=?`, [id]);
                     if(result){

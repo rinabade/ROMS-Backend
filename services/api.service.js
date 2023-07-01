@@ -116,7 +116,7 @@ module.exports = {
 
 				mergeParams: true,
 
-				authentication: true,
+				authentication: false,
 
 				authorization: false,
 
@@ -157,7 +157,7 @@ module.exports = {
 
 				mergeParams: true,
 
-				authentication: true,
+				authentication: false,
 
 				authorization: false,
 
@@ -220,7 +220,9 @@ module.exports = {
 
 				autoAliases: true,
 
-				aliases: {},
+				aliases: {
+					// "POST /file-upload":"multipart:menu.create",
+				},
 				
 				callingOptions: {},
 
