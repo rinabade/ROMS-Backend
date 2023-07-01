@@ -14,12 +14,13 @@ module.exports = {
                     fileChunks.push(chunk);
                 }
                 let imageBuffer = Buffer.concat(fileChunks);
-                const folderName = "uploads";
+                const folderName = "images";
                 const imageName = "image-"+ Date.now() + ".jpeg";
 
                 const imagePath  = path.join(
                     __dirname,
                     "..",
+                    "public",
                     folderName,
                     imageName
                 );

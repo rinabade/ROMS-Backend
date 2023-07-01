@@ -4,6 +4,7 @@ const ApiGateway = require("moleculer-web");
 const cors = require('cors');
 // const { urlencoded } = require("express");
 const path = require("path");
+const serveStatic = require('serve-static')
 
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
@@ -24,7 +25,9 @@ module.exports = {
 
 		ip: "0.0.0.0",
 
-		use: [cors()],
+		use: [
+			
+		],
 
 		        // Global CORS settings for all routes
 				cors: {
@@ -49,6 +52,16 @@ module.exports = {
 
 
 		routes: [
+
+			// {
+			// 	path: "/",
+
+			// 	use: [serveStatic(path.join(__dirname, "public"))],
+
+			
+
+			// },
+
 			{
 				path: "/api",
 
@@ -247,7 +260,9 @@ module.exports = {
 				whitelist: [
 					"file-service.uploads"
 				],
-				use: [],
+				use: [
+					// serveStatic(path.join(__dirname, "public"))
+				],
 				mergeParams: true,
 				authentication: false,
 				authorization: false,
