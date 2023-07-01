@@ -25,9 +25,7 @@ module.exports = {
 
 		ip: "0.0.0.0",
 
-		use: [
-			
-		],
+		use: [cors()],
 
 		        // Global CORS settings for all routes
 				cors: {
@@ -36,7 +34,7 @@ module.exports = {
 					// Configures the Access-Control-Allow-Methods CORS header. 
 					methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE", "PATCH"],
 					// Configures the Access-Control-Allow-Headers CORS header.
-					allowedHeaders: ['Content-Type'],
+					allowedHeaders: ['Content-Type', 'Authorization'],
 					// Configures the Access-Control-Expose-Headers CORS header.
 					exposedHeaders: [],
 					// Configures the Access-Control-Allow-Credentials CORS header.
@@ -52,15 +50,6 @@ module.exports = {
 
 
 		routes: [
-
-			// {
-			// 	path: "/",
-
-			// 	use: [serveStatic(path.join(__dirname, "public"))],
-
-			
-
-			// },
 
 			{
 				path: "/api",

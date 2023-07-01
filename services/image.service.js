@@ -27,7 +27,8 @@ module.exports = {
 
 
                 await sharp(imageBuffer).resize(300, 300).toFile(imagePath);
-                return `${folderName}/${imageName}`;
+                return {image :`${folderName}/${imageName}` };
+                // return `${folderName}/${imageName}`;
             },
                     
         }
