@@ -4,7 +4,6 @@ const {Errors} = require("moleculer");
 const moment = require('moment');
 const ApigatewayMixin = require("../mixins/apigateway.mixin.js");
 
-
 module.exports = {
     name: "register",
     mixins: [ApigatewayMixin],
@@ -17,28 +16,19 @@ module.exports = {
             async handler(ctx) {
                 const { firstname, lastname, email, password, gender, address, phone, job_title, salary_information, employee_status, hire_date } = ctx.params;
                 const now = moment();
-                const formattedNow = now.format('YYYY-MM-DD ');
+                const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
-                    // if (!firstname || !lastname || !email || !password || !gender || !address || !phone || !job_title || !salary_information || !employee_status || !hire_date) {
-                    //     throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {}) 
-                    // }
-
-                    // else {
-                        const [rows] = await connection.execute(`SELECT email FROM employees WHERE email = ? `, [email]);
-                        if (rows[0]) {
-                            throw this.broker.errorHandler(new Errors.MoleculerClientError("The email you have registered is already used. Please register from new email address.", 401, "ERR_UNDEFINED", {}), {}) 
-                        }
-                        else {
-                            // const [result] = await connection.execute(`SELECT role_id FROM roles WHERE role_name = ?`, [job_title]);
-                            // const role_id = result[0].role_id;
-
-                            const Npassword = await bcrypt.hash(password, 8);
-                            const [result1] = await connection.execute('INSERT INTO employees( firstname, lastname, email, password, gender, address, phone, job_title, salary_information, employee_status, hire_date, createdAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', [firstname, lastname, email, Npassword, gender, address, phone, job_title, salary_information, employee_status, hire_date, formattedNow]);
-                            if (result1)
-                                // ctx.call("email.sendmail", { firstname, lastname, email });
-                                return { type: "Success", code: 200, message: "Registration Successfull... Please Check your email" };
-                        }
-                    // }
+                const [rows] = await connection.execute(`SELECT email FROM employees WHERE email = ? `, [email]);
+                if (rows[0]) {
+                    throw this.broker.errorHandler(new Errors.MoleculerClientError("The email you have registered is already used. Please register from new email address.", 401, "ERR_UNDEFINED", {}), {}) 
+                }
+                else {
+                    const Npassword = await bcrypt.hash(password, 8);
+                    const [result1] = await connection.execute('INSERT INTO employees( firstname, lastname, email, password, gender, address, phone, job_title, salary_information, employee_status, hire_date, createdAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', [firstname, lastname, email, Npassword, gender, address, phone, job_title, salary_information, employee_status, hire_date, formattedNow]);
+                    if (result1)
+                        // ctx.call("email.sendmail", { firstname, lastname, email });
+                    return { type: "Success", code: 200, message: "Registration Successfull... Please Check your email" };
+                }
             }
         },
 
@@ -69,7 +59,7 @@ module.exports = {
             rest: "GET /:id",
             async handler (ctx) {
                 const {id} = ctx.params;
-                    const [data] = await connection.execute(`SELECT firstname, lastname, email, gender, address, phone, job_title, hire_date, salary_information, employee_status  FROM employees WHERE employee_id=?`, [id] );
+                    const [data] = await connection.execute(`SELECT employee_id, firstname, lastname, email, password, gender, address, phone, job_title, hire_date, salary_information, employee_status  FROM employees WHERE employee_id=?`, [id] );
                     if(data){
                         return ({type:"SUCCESS", code:200, message:`Employee id : ${id} data fetched successfully....`,  data});
                     }

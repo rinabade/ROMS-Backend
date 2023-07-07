@@ -27,11 +27,39 @@ module.exports = {
 
 
                 await sharp(imageBuffer).resize(300, 300).toFile(imagePath);
-                return {image :`${folderName}/${imageName}` };
-                // return `${folderName}/${imageName}`;
+                // return {image :`${folderName}/${imageName}` };
+                return `${folderName}/${imageName}`;
             },
                     
-        }
-    },
+        },
+    
 
+
+    profile: {
+        rest: "POST /",
+        handler: async (ctx) => {
+            const fileChunks = [];
+            for await(const chunk of ctx.params){
+                fileChunks.push(chunk);
+            }
+            let imageBuffer = Buffer.concat(fileChunks);
+            const folderName = "Profile";
+            const imageName = "images-"+ Date.now() + ".jpeg";
+
+            const imagePath  = path.join(
+                __dirname,
+                "..",
+                "public",
+                folderName,
+                imageName
+            );
+
+
+            await sharp(imageBuffer).resize(300, 300).toFile(imagePath);
+            // return {image :`${folderName}/${imageName}` };
+            return `${folderName}/${imageName}`;
+        },
+                
+    }
+}
 }

@@ -28,7 +28,6 @@ module.exports = {
         getAllFeedback:{
             rest: "GET /",
             async handler (ctx) {
-                console.log("feedback-----", ctx.params)
                 try {
                     const [result] = await connection.query(`SELECT feedback_id, fullname,email,message FROM feedbacks`);
                     if(result){

@@ -8,58 +8,30 @@ module.exports = {
     mixins: [ApiGatewayMixin],
     actions: {
         create: {
+            authorization :{
+                role : "admin",
+            },
             rest: "POST /",
-            // uploads.single('file'),
             async handler (ctx) {
                 const {category_id,item, description, price, image } = ctx.params;
                 const now = moment();
                 const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
 
-                // const fileChunks = [];
-                // for await(const chunk of ctx.params){
-                //     fileChunks.push(chunk);
-                // }
-                // let imageBuffer = Buffer.concat(fileChunks);
-
-                // const imagePath  = path.join(
-                //     __dirname,
-                //     "..",
-                //     "uploads",
-                //     "image.jpeg"
-                // );
-                // console.log(imagePath)
-
-                // const image = await sharp(imageBuffer).resize(300, 300).toFile(imagePath);
-                // console.log(image);
-
-                // if(!category_id || !item || !description || !price ) {
-                //           throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {})
-                //         }
-                //         else{
-                            const[rows] = await connection.execute(`SELECT item_name FROM menus WHERE item_name=?`, [item]);
-                            if(rows[0]){
-                                throw this.broker.errorHandler(new Errors.MoleculerClientError("The food item is already created....", 401, "ERR_UNDEFINED", {}), {})
-                            }
-
-                            else{
-                              const [result] = await connection.query(`INSERT INTO menus(category_id, item_name, description, price, image, createdAt) VALUES(?,?,?,?,?,?)`, [category_id,item,description, price, image, formattedNow]);
-                              if(result){
-                                  return {type: "SUCCESS", code: 200, message: "New Food item is added in Menu"};
-                                }
-                                else{
-                                    throw this.broker.errorHandler(new Errors.MoleculerClientError("Something went wrong", 401, "ERR_UNDEFINED", {}), {})
-                                }
-                            }
-                        // }
-                    }
-
+                const [result] = await connection.query(`INSERT INTO menus(category_id, item_name, description, price, image, createdAt) VALUES(?,?,?,?,?,?)`, [category_id,item,description, price, image, formattedNow]);
+                if(result){
+                    return {type: "SUCCESS", code: 200, message: "New Food item is added in Menu"};
+                }
+                else{
+                   throw this.broker.errorHandler(new Errors.MoleculerClientError("Something went wrong", 401, "ERR_UNDEFINED", {}), {})
+                }
+            }
         },
 
 
         getAllMenu:{
-            // authorization :{
-            //     role : "admin",
-            // },
+            authorization :{
+                role : "admin",
+            },
             rest: "GET /",
             async handler (ctx) {
                 try {

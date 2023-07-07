@@ -20,19 +20,17 @@ module.exports = {
 
 	/** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
 	settings: {
-
+		
 		port: process.env.PORT || 5000,
 
 		ip: "0.0.0.0",
 
-		use: [
-			
-		],
+		use: [cors()],
 
 		        // Global CORS settings for all routes
 				cors: {
 					// Configures the Access-Control-Allow-Origin CORS header.
-					origin: "*",
+					origin: "http://localhost:3000",
 					// Configures the Access-Control-Allow-Methods CORS header.
 					methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE", "PATCH"],
 					// Configures the Access-Control-Allow-Headers CORS header.
@@ -45,10 +43,10 @@ module.exports = {
 					maxAge: 3600
 				},
 
-				assets:{
-					folder: path.join(__dirname,"uploads"),
-					options: {}
-				},
+				// assets:{
+				// 	folder: path.join(__dirname,"uploads"),
+				// 	options: {}
+				// },
 
 
 		routes: [
@@ -57,7 +55,7 @@ module.exports = {
 				path: "/api",
 
 				cors: {
-					origin: "*",
+					origin: "http://localhost:3000",
 					allowedHeaders: ['Content-Type'],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 					credentials: true,
@@ -191,7 +189,7 @@ module.exports = {
 			{
 				path: "/admin",
 				cors: {
-					origin: "*",
+					origin: "http://localhost:3000",
 					allowedHeaders: ['Content-Type', 'Authorization'],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 					credentials: true,
@@ -248,7 +246,7 @@ module.exports = {
 			{
 				path: "/upload",
 				cors: {
-					origin: "*",
+					origin: "http://localhost:3000",
 						allowedHeaders: ['Content-Type', 'Authorization'],
 						methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 						credentials: true,
@@ -259,7 +257,8 @@ module.exports = {
 				},
 
 				whitelist: [
-					"file-service.uploads"
+					"file-service.uploads",
+					"file-service.profile"
 				],
 				use: [
 					// serveStatic(path.join(__dirname, "public"))
@@ -270,6 +269,8 @@ module.exports = {
 				autoAliases: true,
 				aliases: {
 					"POST /file-upload":"multipart:file-service.uploads",
+					"POST /profile-upload":"multipart:file-service.profile",
+
 				},
 
 				callingOptions: {},
@@ -292,17 +293,28 @@ module.exports = {
 
 			{
 				path: "/change",
+				cors: {
+					origin: "http://localhost:3000",
+						allowedHeaders: ['Content-Type', 'Authorization'],
+						methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+						credentials: true,
+						// Configures the Access-Control-Expose-Headers CORS header.
+						exposedHeaders: [],
+						// Configures the Access-Control-Max-Age CORS header.
+						maxAge: 3600
+				},
 
 				whitelist: [
 					"password.change",
-					"profile.update"
+					"profile.update",
+					"profile.image"
 				],
 
 				use: [],
 
 				mergeParams: true,
 
-				authentication: true,
+				authentication: false,
 
 				authorization: false,
 
@@ -373,8 +385,8 @@ module.exports = {
 			{
 				path: "/customer",
 				cors: {
-					origin: "*",
-					allowedHeaders: ['Content-Type'],
+					origin: "http://localhost:3000",
+					allowedHeaders: ['Content-Type',],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 					credentials: true,
 					// Configures the Access-Control-Expose-Headers CORS header.
@@ -384,9 +396,10 @@ module.exports = {
 				},
 
 				whitelist: [
-					"cart.create",
-					"cart.update",
-					"cart.getAllCart",
+					// "orders.create",
+					"orderDetail.create",
+					"orderDetail.update",
+					"orderDetail.getOrderID",
 					"feedback.create",
 					"feedback.getAllFeedback",
 					"feedback.delete",
@@ -453,8 +466,7 @@ module.exports = {
 
 
 		async authorize(ctx, routes, req) {
-
 		}
-
 	}
-};
+}
+

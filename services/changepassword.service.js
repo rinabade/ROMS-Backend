@@ -1,5 +1,6 @@
 const connection = require("../db-Config.js");
 const bcrypt = require("bcryptjs");
+const moment = require('moment');
 const apigatewayMixin = require("../mixins/apigateway.mixin.js");
 
 module.exports = {
@@ -7,13 +8,15 @@ module.exports = {
     mixins: [apigatewayMixin],
     actions: {
         change: {
-            authorization: {
-                role: "admin" || "user",
-            },
-            rest: "PATCH /",
-            handler: async (ctx) => {
+            // authorization: {
+            //     role: "admin",
+            // },
+            rest: "PATCH /:id",
+            async handler (ctx) {
+                const {id} = ctx.params;
+                const now = moment();
+                const formattedNow = now.format('YYYY-MM-DD ');
                 const { o_password, n_password, c_password } = ctx.params;
-                const id = ctx.meta.user;
 
                 const [result] = await connection.query('SELECT * FROM employees WHERE employee_id=?', [id]);
                 if (result) {
@@ -24,8 +27,7 @@ module.exports = {
                     try {
                         if (n_password === c_password) {
                             const pwd = await bcrypt.hash(n_password, 8);
-                            const pwUat = Math.floor(Date.now() / 1000);
-                            const result = await connection.execute(`UPDATE employees SET password=?, updatedAt=? WHERE employee_id = ?`, [pwd, pwUat, id]);
+                            const result = await connection.execute(`UPDATE employees SET password=?, updatedAt=? WHERE employee_id = ?`, [pwd, formattedNow, id]);
                             return "Password changed successfully";
                         }
                         else {

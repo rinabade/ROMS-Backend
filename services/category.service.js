@@ -22,16 +22,16 @@ module.exports = {
                     throw this.broker.errorHandler(new Errors.MoleculerClientError("The field remains empty. Please fill out the field.", 401, "ERR_UNDEFINED", {}), {}) 
                 }
 
-                const [ rows] = await connection.execute(`SELECT category_name FROM categories WHERE category_name=?`, [category_name]);
-                if(rows){
-                    throw this.broker.errorHandler(new Errors.MoleculerClientError("The category item is already created....", 401, "ERR_UNDEFINED", {}), {}) 
-                }
-                else{
+                // const [ rows] = await connection.execute(`SELECT category_name FROM categories WHERE category_name=?`, [category_name]);
+                // if(rows){
+                //     throw this.broker.errorHandler(new Errors.MoleculerClientError("The category item is already created....", 401, "ERR_UNDEFINED", {}), {}) 
+                // }
+                // else{
                     const [result] = await connection.execute(`INSERT INTO categories(category_name, createdAt) VALUES (?,?)`, [category_name,formattedNow]);
                     if(result){
                         return {type: "SUCCESS", code:200, message:"Category added successfully...."}
                     }
-                }
+                // }
                 
 
             }
