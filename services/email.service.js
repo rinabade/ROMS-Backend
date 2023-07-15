@@ -46,6 +46,7 @@ module.exports = ({
           to: email,
           subject: "Reset Password",
           text: `Hello ${firstname} ${lastname}. Please click on the given link to reset the password : ${resetLink} `
+          
         });
       }
     },

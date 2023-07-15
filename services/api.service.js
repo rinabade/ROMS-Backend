@@ -399,10 +399,11 @@ module.exports = {
 					// "orders.create",
 					"orderDetail.create",
 					"orderDetail.update",
-					"orderDetail.getOrderID",
+					"orderDetail.getOrderDetails",
 					"feedback.create",
 					"feedback.getAllFeedback",
 					"feedback.delete",
+					"search.searchFood"
 				],
 
 				use: [],

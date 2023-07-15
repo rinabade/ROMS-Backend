@@ -17,57 +17,73 @@ module.exports = {
 				const table_number = ctx.params.table_number;
 				const result = await connection.execute(`INSERT INTO orders (table_number, createdAt) VALUES (?,?)`, [table_number, formattedNow]);
 				
-				const [result1] = await connection.execute(`SELECT order_id FROM orders WHERE table_number=? ORDER BY order_id DESC LIMIT 1`, [table_number]);
+				const [result1] = await connection.execute(`SELECT * FROM orders ORDER BY order_id DESC LIMIT 1`);
 					
 				const cartItems  = ctx.params.cartItems;
-				const query = `INSERT INTO orderdetails ( order_id, menu_id, quantity) VALUES (?,?,?)`;
+				const query = `INSERT INTO orderdetails ( order_id, menu_id, table_number, quantity, createdAt) VALUES (?,?,?,?,?)`;
 
 				for (const item of cartItems) {
 				const { menu_id, quantity } = item;
-				const values = [result1[0].order_id, menu_id, quantity];
+				const values = [result1[0].order_id, menu_id, result1[0].table_number, quantity,formattedNow];
 
 				await connection.execute(query, (values));
 			}
+
+		}
 			
-			return "Cart items added successfully"
-			},
 		},
 
-		getOrderID:{
+		getOrderDetails:{
             rest: "GET /",
             async handler (ctx) {
-                const [rows] = await connection.execute(
-					"SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
-				  );
+                // const [rows] = await connection.execute(
+				// 	"SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
+				//   );
 				
-				  if (rows.length > 0) {
-					const latestOrderId = rows[0].order_id;
-					
-				  } else {
-					console.log("No orders found");
-				  }
+				//   if (rows.length > 0) {
+				// 	const latestOrderId = rows[0].order_id;
+				// 	return ("latestOrderId", latestOrderId)
+				//   } else {
+				// 	console.log("No orders found");
+				//   }
 
-            } 
+				const [rows] = await connection.execute("SELECT * FROM kitchenView ORDER BY order_id DESC LIMIT 1");
+				
+				return {type: "SUCCESS", code:200, message:"Category added successfully....", data: rows }
+			
+			// return "Cart items added successfully"
+			},
 
         },
+
+		// getALLCart : {
+		// 	rest: "GET /",
+		// 	async handler(ctx){
+		// 		const values = await connection.execute(`SELECT item_name, `)
+		// 	}
+
+		// },
 
 		update: {
 			rest: "PATCH /:id",
 			async handler(ctx) {
-				const { id, quantity } = ctx.params;
+				const { id, table_number } = ctx.params;
+				console.log("id-------", id);
+				console.log("table---------" , table_number);
 
 				const now = moment();
 				const formattedNow = now.format("YYYY-MM-DD HH:mm:ss");
 
 				const [result] = await connection.query(
-					`UPDATE carts SET quantity=?, updatedAt=? WHERE cart_id=? `,
-					[quantity, formattedNow, id]
+					`UPDATE orderdetails SET status=?, updatedAt=? WHERE menu_id=? AND table_number=? AND status=? `,
+					[1, formattedNow, id, table_number,0]
 				);
 				if (result) {
 					return {
 						type: "SUCCESS",
 						code: 200,
 						message: "Cart is updated successfully....",
+						data: `${result}`
 					};
 				}
 			},
@@ -103,4 +119,4 @@ module.exports = {
 			},
 		},
 	},
-};
+	}

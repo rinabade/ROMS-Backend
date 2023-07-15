@@ -30,8 +30,10 @@ module.exports = {
                     const email= result[0].email;
                     const firstname = result[0].firstname;
                     const lastname = result[0].lastname;
+                    
                     ctx.call("email.token", {email,firstname, lastname,resetLink});
-                    return { type: "Success", code: 200, message: "Password reset email has been sent. Please check your email", resetLink:resetLink};
+                    // return { type: "Success", code: 200, message: "Password reset email has been sent. Please check your email", resetLink:resetLink};
+                    console.log(resetLink)
 
                 }
 
