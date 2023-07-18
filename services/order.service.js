@@ -43,19 +43,31 @@ module.exports= {
 
             
          }
-        }
+        },
 
+        getOrderDetails:{
+            rest: "GET /",
+            async handler (ctx) {
+                // const [rows] = await connection.execute(
+				// 	"SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
+				//   );
+				
+				//   if (rows.length > 0) {
+				// 	const latestOrderId = rows[0].order_id;
+				// 	return ("latestOrderId", latestOrderId)
+				//   } else {
+				// 	console.log("No orders found");
+				//   }
 
-    //     getOrder :{
-    //         rest: "GET /:id",
-    //         async handler(ctx) {
-    //             const {id} = ctx.params;
+				const [rows] = await connection.execute("SELECT * FROM kitchenView");
+				
+				return {type: "SUCCESS", code:200, message:"Category added successfully....", data: rows }
+			
+			// return "Cart items added successfully"
+			},
 
-    //             const result = await connection.execute(`SELECT order_id FROM orders WHERE order_id=?`, [id]);
-    //             if(result){
-    //                 return
-    //             }
-    //     }
+        },
+    
     }
 }
 

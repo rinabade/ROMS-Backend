@@ -396,14 +396,17 @@ module.exports = {
 				},
 
 				whitelist: [
-					// "orders.create",
+					"orders.getOrderDetails",
 					"orderDetail.create",
 					"orderDetail.update",
 					"orderDetail.getOrderDetails",
 					"feedback.create",
 					"feedback.getAllFeedback",
 					"feedback.delete",
-					"search.searchFood"
+					"search.searchFood",
+					"payment.create",
+					"payment.update",
+					"payment.getPaymentDetail"
 				],
 
 				use: [],
