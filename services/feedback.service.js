@@ -40,7 +40,6 @@ module.exports = {
 
         },
 
-
         delete: {
             rest: "DELETE /:id",
             async handler(ctx){

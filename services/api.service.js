@@ -21,16 +21,16 @@ module.exports = {
 	/** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
 	settings: {
 		
-		port: process.env.PORT || 5000,
+		port:  5000,
 
-		ip: "0.0.0.0",
+		ip: "202.52.248.120",
 
 		use: [cors()],
 
 		        // Global CORS settings for all routes
 				cors: {
 					// Configures the Access-Control-Allow-Origin CORS header.
-					origin: "http://localhost:3000",
+					origin: "http://202.52.248.120:3000",
 					// Configures the Access-Control-Allow-Methods CORS header.
 					methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE", "PATCH"],
 					// Configures the Access-Control-Allow-Headers CORS header.
@@ -55,7 +55,7 @@ module.exports = {
 				path: "/api",
 
 				cors: {
-					origin: "http://localhost:3000",
+					origin: "http://202.52.248.120:3000",
 					allowedHeaders: ['Content-Type'],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 					credentials: true,
@@ -189,7 +189,7 @@ module.exports = {
 			{
 				path: "/admin",
 				cors: {
-					origin: "http://localhost:3000",
+					origin: "http://202.52.248.120:3000",
 					allowedHeaders: ['Content-Type', 'Authorization'],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 					credentials: true,
@@ -246,7 +246,7 @@ module.exports = {
 			{
 				path: "/upload",
 				cors: {
-					origin: "http://localhost:3000",
+					origin: "http://202.52.248.120:3000",
 						allowedHeaders: ['Content-Type', 'Authorization'],
 						methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 						credentials: true,
@@ -258,7 +258,8 @@ module.exports = {
 
 				whitelist: [
 					"file-service.uploads",
-					"file-service.profile"
+					"file-service.profile",
+					"file-service.getFeedbacks",
 				],
 				use: [
 					// serveStatic(path.join(__dirname, "public"))
@@ -294,7 +295,7 @@ module.exports = {
 			{
 				path: "/change",
 				cors: {
-					origin: "http://localhost:3000",
+					origin: "http://202.52.248.120:3000",
 						allowedHeaders: ['Content-Type', 'Authorization'],
 						methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 						credentials: true,
@@ -385,7 +386,7 @@ module.exports = {
 			{
 				path: "/customer",
 				cors: {
-					origin: "http://localhost:3000",
+					origin: "http://202.52.248.120:3000",
 					allowedHeaders: ['Content-Type',],
 					methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 					credentials: true,
@@ -400,13 +401,15 @@ module.exports = {
 					"orderDetail.create",
 					"orderDetail.update",
 					"orderDetail.getOrderDetails",
+					"orderDetail.delete",
 					"feedback.create",
 					"feedback.getAllFeedback",
 					"feedback.delete",
 					"search.searchFood",
 					"payment.create",
 					"payment.update",
-					"payment.getPaymentDetail"
+					"payment.getPaymentDetail",
+					"customerOrder.getOrders"
 				],
 
 				use: [],

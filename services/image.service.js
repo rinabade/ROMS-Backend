@@ -60,6 +60,22 @@ module.exports = {
             return `${folderName}/${imageName}`;
         },
                 
-    }
+    },
+
+
+    getFeedbacks:{
+        rest: "GET /",
+        async handler (ctx) {
+            // try {
+                const [result] = await connection.execute("SELECT * FROM feedbacks ORDER BY feedback_id DESC LIMIT 5");
+                if(result){
+                    return ({type:"SUCCESS", code:200, message:"All data fetched successfully....", data: result});
+                }
+            // } catch (error) {
+            //     throw new Error({type: "ERROR", code:403, message:"Something went wrong..."});
+            // }
+        } 
+
+    },
 }
 }

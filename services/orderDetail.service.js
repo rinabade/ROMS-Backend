@@ -1,9 +1,6 @@
 const connection = require("../db-Config.js");
 const { Errors } = require("moleculer");
-const moment = require("moment");
-const crypto = require("crypto");
-const { log } = require("console");
-
+const moment = require('moment');
 
 module.exports = {
 	name: "orderDetail",
@@ -36,33 +33,13 @@ module.exports = {
 		getOrderDetails:{
             rest: "GET /",
             async handler (ctx) {
-                // const [rows] = await connection.execute(
-				// 	"SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
-				//   );
-				
-				//   if (rows.length > 0) {
-				// 	const latestOrderId = rows[0].order_id;
-				// 	return ("latestOrderId", latestOrderId)
-				//   } else {
-				// 	console.log("No orders found");
-				//   }
-
 				const [rows] = await connection.execute("SELECT * FROM kitchenView ORDER BY order_id DESC LIMIT 1");
 				
 				return {type: "SUCCESS", code:200, message:"Category added successfully....", data: rows }
-			
-			// return "Cart items added successfully"
 			},
-
         },
 
-		// getALLCart : {
-		// 	rest: "GET /",
-		// 	async handler(ctx){
-		// 		const values = await connection.execute(`SELECT item_name, `)
-		// 	}
-
-		// },
+		
 
 		update: {
 			rest: "PATCH /:id",
@@ -76,7 +53,7 @@ module.exports = {
 
 				const [result] = await connection.query(
 					`UPDATE orderdetails SET status=?, updatedAt=? WHERE menu_id=? AND table_number=? AND status=? `,
-					[1, formattedNow, id, table_number,0]
+					['complete', formattedNow, id, table_number,'pending']
 				);
 				if (result) {
 					return {
@@ -93,10 +70,12 @@ module.exports = {
 			rest: "DELETE /:id",
 			async handler(ctx) {
 				const { id } = ctx.params;
-				try {
-					const [result] = await connection.query(
-						`DELETE FROM carts WHERE cart_id=?`,
-						[id]
+				// console.log(table_number);
+				console.log(id);
+				// try {
+					const [result] = await connection.execute(
+						`DELETE FROM orderdetails WHERE menu_id=? AND status=?`,
+						[id, "pending"]
 					);
 					if (result) {
 						return {
@@ -105,17 +84,17 @@ module.exports = {
 							message: `Cart id : '${id}'  is deleted successfully....`,
 						};
 					}
-				} catch (error) {
-					throw this.broker.errorHandler(
-						new Errors.MoleculerClientError(
-							"Something went wrong.. Try Again",
-							401,
-							"ERR_UNDEFINED",
-							{}
-						),
-						{}
-					);
-				}
+				// } 
+				// catch (error) {
+				// 	throw this.broker.errorHandler(
+				// 		new Errors.MoleculerClientError(
+				// 			"Something went wrong.. Try Again",
+				// 			401,
+				// 			"ERR_UNDEFINED",
+				// 			{}
+				// 		),
+				// 	);
+				// }
 			},
 		},
 	},
