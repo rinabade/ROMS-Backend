@@ -12,7 +12,7 @@ module.exports = {
 			rest: "POST /",
 			async handler(ctx) {
                 const now = moment();
-				const formattedNow = now.format("YYYY-MM-DD HH:mm:ss");
+				const formattedNow = now.format("YYYY-MM-DD");
                 const {table_number,paymentMethod,transactionCode, totalPrice} = ctx.params
                 const payment_status = 'complete';
                  console.log(totalPrice);
@@ -26,8 +26,12 @@ module.exports = {
         getPaymentDetail: {
             rest: "GET /",
             async handler(ctx) {
-                const [result] = await connection.execute('SELECT table_number, payment_method, transactionCode,createdAt, payment_status FROM payments ');
-                return {type: "Success", code: 200, message: "Payment fetched successfully", data: result }
+				const now = moment();
+				const formattedNow = now.format("YYYY-MM-DD");
+                const [result] = await connection.execute(`SELECT * FROM payments WHERE createdAt=?`, [formattedNow]);
+				if(result){
+					return {type: "Success", code: 200, message: `Payment fetched successfully`, data: result }
+				}
             }
         },
 

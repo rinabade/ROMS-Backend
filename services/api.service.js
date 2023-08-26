@@ -409,7 +409,10 @@ module.exports = {
 					"payment.create",
 					"payment.update",
 					"payment.getPaymentDetail",
-					"customerOrder.getOrders"
+					"customerOrder.getOrders",
+					"reservation.create",
+					"reservation.get",
+					"reservation.delete"
 				],
 
 				use: [],
